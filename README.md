@@ -25,10 +25,11 @@ How to check the background process in Linux?
 What is the command to execute a php file in background?
 --------------------------------------------------------
 
- Syntax:
-	nohup exec </path/to/php/> <path/to/your/phpfile> arg1 arg2 > /dev/null &
- example: 
-	nohup exec php process.php hello world > /dev/null &	
+ Syntax: 
+ nohup exec </path/to/php/> <path/to/your/phpfile> arg1 arg2 > /dev/null & 
+ 
+ Example: 
+ nohup exec php process.php hello world > /dev/null &	
 
 What is nohup?
 ---------------
