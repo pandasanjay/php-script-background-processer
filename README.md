@@ -2,10 +2,6 @@ php-script-background-processer
 ===============================
 
 Here we can run a PHP file (script) in background, This process is hidden to the end user. IT improves your Website efficiency.  
-php-script-background-processer
-===============================
-
-Here we can run a PHP file (script) in background, This process is hidden to the end user. IT improves your Website efficiency.  
 
 EXECUTE PHP SCRIPT IN BACKGROUND PROCESSING
 ---------------------------------------------------------------------------------
@@ -63,14 +59,17 @@ step 3: create a instance of the class BackgroundProcess
 	$proc=new BackgroundProcess();
 	$proc->setCmd('exec php <BASE_PATH>/process.php hello world');
 	$proc->start();
-
+	
 	Type 3: 
-  $proc=new BackgroundProcess();
-  $proc->setCmd('exec php <BASE_PATH>/process.php hello world')->start();
+        $proc=new BackgroundProcess();
+	$proc->setCmd('exec php <BASE_PATH>/process.php hello world')->start();
 
 How to get all process which is running?
-	$proc=new BackgroundProcess();
+
+        $proc=new BackgroundProcess();
 	print_r($proc->showAllPocess());
+	
 How to kill a process ?
+
   $proc=new BackgroundProcess();
   $proc->setProcessId(101)->stop();//set the process id.
