@@ -71,5 +71,5 @@ How to get all process which is running?
 	
 How to kill a process ?
 
-  $proc=new BackgroundProcess();
-  $proc->setProcessId(101)->stop();//set the process id.
+  	$proc=new BackgroundProcess();
+  	$proc->setProcessId(101)->stop(); //set the process id.
