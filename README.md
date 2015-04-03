@@ -69,7 +69,6 @@ step 3: create a instance of the class BackgroundProcess
 	$proc->setCmd('exec php <BASE_PATH>/process.php hello world')->start();
 	
 	Alternate way to do the PHP URL execute in background with out the direct (.php) file.
-
         $process=new BackgroundProcess("curl -s -o <Base Path>/log/log_storewav.log <PHP URL to execute> -d param_key=<Param_value>");
         
 
