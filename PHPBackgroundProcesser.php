@@ -12,6 +12,9 @@ class BackgroundProcess{
     private $debugger=true;
     private $msg="";
     
+    /*
+    * @Param $cmd: Pass the linux command want to run in background 
+    */
     public function __construct($cmd=null){
       
         if(!empty($cmd))
@@ -51,7 +54,8 @@ class BackgroundProcess{
     }
     
     public function start(){
-        if ($this->command != '')$this->do_process();
+        if ($this->command != '')
+        $this->do_process();
         else return true;
     }
 
@@ -64,12 +68,15 @@ class BackgroundProcess{
     
     //do the process in background
     public function do_process(){
-        echo "sdf";
         $command = 'nohup '.$this->command.' > /dev/null 2>&1 & echo $!';
         exec($command ,$pross);
         $this->pid = (int)$pross[0];
     }
     
+    /*
+    *To execute a PHP url on background you have to do the following things.
+    * $process=new BackgroundProcess("curl -s -o <Base Path>/log/log_storewav.log <PHP URL to execute> -d param_key=<Param_value>");
+    */
     
 }
 ?>
