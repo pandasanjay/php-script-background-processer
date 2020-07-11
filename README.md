@@ -5,15 +5,15 @@ Here we can run a PHP file (script) in the background, This process is hidden to
 # Table of content:
 
 - [EXECUTE PHP SCRIPT IN BACKGROUND PROCESSING](#execute-php-script-in-background-processing)
-  - [How to check the background process in Linux?](#how-to-check-the-background-process-in-linux-)
-- [What is the command to execute a PHP file in the background?](#what-is-the-command-to-execute-a-php-file-in-the-background-)
-- [What is nohup?](#what-is-nohup-)
-- [What is exec?](#what-is-exec-)
-- [How to use this PHP library on your code?](#how-to-use-this-php-library-on-your-code-)
-- [How to get all process which is running?](#how-to-get-all-process-which-is-running-)
-- [How to kill a process?](#how-to-kill-a-process-)
-- [How to generate stdout and stderr in a file. (Recommended Only for debugging)](#how-to-generate-stdout-and-stderr-in-a-file--recommended-only-for-debugging-)
-- [How to use this inside CodeIgniter4](#how-to-use-this-inside-codeigniter4)
+  - [How to check the background process in Linux?](#how-to-check-the-background-process-in-linux)
+- [What is the command to execute a PHP file in the background?](#what-is-the-command-to-execute-a-php-file-in-the-background)
+- [What is nohup?](#what-is-nohup)
+- [What is exec?](#what-is-exec)
+- [How to use this PHP library on your code?](#how-to-use-this-php-library-on-your-code)
+- [How to get all process which is running?](#how-to-get-all-process-which-is-running)
+- [How to kill a process?](#how-to-kill-a-process)
+- [How to generate stdout and stderr in a file? (Recommended Only for debugging)](#how-to-generate-stdout-and-stderr-in-a-file-recommended-only-for-debugging)
+- [How to use this inside CodeIgniter4?](#how-to-use-this-inside-codeigniter4)
 
 ## EXECUTE PHP SCRIPT IN BACKGROUND PROCESSING
 
