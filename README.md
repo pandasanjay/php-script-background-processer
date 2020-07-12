@@ -14,6 +14,8 @@ Here we can run a PHP file (script) in the background, This process is hidden to
 - [How to kill a process?](#how-to-kill-a-process)
 - [How to generate stdout and stderr in a file? (Recommended Only for debugging)](#how-to-generate-stdout-and-stderr-in-a-file-recommended-only-for-debugging)
 - [How to use this inside CodeIgniter4?](#how-to-use-this-inside-codeigniter4)
+- [How to use in CodeIgniter 3](#how-to-use-in-codeigniter-3)
+  - [Issues I faced while using it with codeigniter3.](#issues-i-faced-while-using-it-with-codeigniter3)
 
 ## EXECUTE PHP SCRIPT IN BACKGROUND PROCESSING
 
@@ -70,7 +72,7 @@ This command is used to execute a process in Linux. It can process one or more p
 
 **Step 1:** create two file name index.php and process.php
 
-**step 2:** include the PHPBackgroundProcessor.php file in the index.php
+**step 2:** include the BackgroundProcessor.php file in the index.php
 
 **step 3:** create an instance of the class BackgroundProcess
 
@@ -129,7 +131,7 @@ After run which will generate `/tmp/out_<random_number>` for `stdout` and `/tmp/
 
 > Please follow same step inside `example` folder
 
-**Step 1:** Copy the `PHPBackgroundProcessor.php` to `<CodeIgniter root>/app/Libraries/` \
+**Step 1:** Copy the `BackgroundProcessor.php` to `<CodeIgniter root>/app/Libraries/` \
 **Step 2:** Add a namespace e.g `namespace App\Libraries;` first line after `<?php` \
 **Step 3:** Create a controller for background process `app/Controllers/BackgroundProcess.php`. Make sure the class name and file name should same. \
 
@@ -176,3 +178,81 @@ class BackgroundRunner extends Controller
 ```
 
 **Step 5:** Start the server of your application and try `curl http://localhost:8080/backgroundrunner/` you will see a number which is process id. it means background process started.
+
+## How to use in CodeIgniter 3
+
+**Step 1:** Copy the `BackgroundProcessor.php` to `<CodeIgniter root>/application/Libraries/` \
+**Step 2:** Create a controller for background process `application/controllers/Background.php`.
+
+```php
+//Add this code to "application/controllers/Background.php"
+
+<?php
+
+class Background extends CI_Controller
+{
+
+    public function run($to = 'World')
+    {
+        echo "Hello I am a background process {$to}!" . PHP_EOL;
+    }
+}
+
+```
+
+**Step 3:** Add a member function name `background` to `application/controllers/Welcome.php`. Place below code there.
+
+```php
+	public function background()
+	{
+		$this->load->library('backgroundprocess');
+		$this->backgroundprocess->setCmd("curl -o /www/application/logs/log_background_process.log " . base_url('index.php/background/run'));
+		//Please don't use "true" argument in a production, This will fill your storage if you not clean all the logs.
+		$this->backgroundprocess->start(true);
+		$pid = $this->backgroundprocess->getProcessId();
+		echo $this->backgroundprocess->get_log_paths();
+		echo $pid . "\n";
+	}
+```
+
+**Step 4**: try running `http://localhost:[port]/www/index.php/welcome/background`
+
+```text
+//Output
+Log path:
+stdout: /tmp/out_10
+stderr: /tmp/error_out_10
+457
+```
+
+### Issues I faced while using it with codeigniter3.
+
+-> _libcurl.so.4 CURL_OPENSSL_4 not found._
+
+```sh
+# Check the stderr file path in your server to find this error if any.
+
+root@3d009baa70f5:/# cat /tmp/error_out_10
+curl: /opt/lampp/lib/libcurl.so.4: no version information available (required by curl)
+curl: relocation error: curl: symbol curl_mime_headers version CURL_OPENSSL_4 not defined in file libcurl.so.4 with link time reference
+```
+
+`Solutions:`\
+ There might be two libcurl.so file available so php get confused. To find that in linux `find -iname libcurl.*`. My output
+`sh # My Output root@3d009baa70f5:/# find -iname libcurl.* ./opt/lampp/lib/libcurl.so.4.4.0 ./opt/lampp/lib/pkgconfig/libcurl.pc ./opt/lampp/lib/libcurl.la ./opt/lampp/lib/libcurl.so.4 ./opt/lampp/lib/libcurl.a ./opt/lampp/share/man/man3/libcurl.3 ./opt/lampp/share/aclocal/libcurl.m4 ./usr/lib/x86_64-linux-gnu/libcurl.so.4 ./usr/lib/x86_64-linux-gnu/libcurl.so.4.5.0`
+You will find two path which consist of `/opt/lampp/lib/` and `/usr/lib/x86_64-linux-gnu/`
+
+To fix this follow below 2 command if needed use `sudo`
+
+    ```sh
+    rm /opt/lampp/lib/libcurl.so.4
+    ln -s /usr/lib/x86_64-linux-gnu/libcurl.so.4.5.0 /opt/lampp/lib/libcurl.so.4
+    ```
+    Try again to run the application and check if you are getting any error.
+    I get below error too. Solve the same way above.
+
+    ```sh
+    root@3d009baa70f5:/# cat /tmp/error_out_13
+    curl: /opt/lampp/lib/libldap_r-2.4.so.2: no version information available (required by /opt/lampp/lib/libcurl.so.4)
+    curl: /opt/lampp/lib/liblber-2.4.so.2: no version information available (required by /opt/lampp/lib/libcurl.so.4)
+    ```

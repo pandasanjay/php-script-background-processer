@@ -63,8 +63,9 @@ class BackgroundProcess
         return $op;
     }
 
-    public function start()
+    public function start($isOutPut = null)
     {
+        $this->isOutPut = $isOutPut;
         if ($this->command != '')
             $this->do_process();
         else return true;
