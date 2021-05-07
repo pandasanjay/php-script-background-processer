@@ -38,10 +38,8 @@ exec php index.php > /dev/null 2>&1 & echo \$!
 ---
 
 ```sh
-
-    ps -l (list all process)
-    ps -ef (all full details of the process)
-
+ps -l (list all process)
+ps -ef (all full details of the process)
 ```
 
 ## What is the command to execute a PHP file in the background?
@@ -84,43 +82,45 @@ We can use this:
 $proc=new BackgroundProcess('exec php <BASE_PATH>/process.php hello world');
 ```
 
-    **Type 2:**
+**Type 2:**
 
-    ```php
-    $proc=new BackgroundProcess();
-    $proc->setCmd('exec php <BASE_PATH>/process.php hello world');
-    $proc->start();
-    ```
+```php
+$proc=new BackgroundProcess();
+$proc->setCmd('exec php <BASE_PATH>/process.php hello world');
+$proc->start();
+```
 
-    **Type 3:**
-    ```php
-    	$proc=new BackgroundProcess();
-    	$proc->setCmd('exec php <BASE_PATH>/process.php hello world')->start();
-    ```
-    An alternate way to do the PHP URL executes in the background without the direct (.php) file.
-    ```php
-    $process=new BackgroundProcess("curl -s -o <Base Path>/log/log_storewav.log <PHP URL to execute> -d param_key=<Param_value>");
-    ```
+**Type 3:**
+
+```php
+$proc=new BackgroundProcess();
+$proc->setCmd('exec php <BASE_PATH>/process.php hello world')->start();
+```
+An alternate way to do the PHP URL executes in the background without the direct (.php) file.
+
+```php
+$process=new BackgroundProcess("curl -s -o <Base Path>/log/log_storewav.log <PHP URL to execute> -d param_key=<Param_value>");
+```
 
 ## How to get all process which is running?
 
-    ```php
-    $proc=new BackgroundProcess();
-    print_r($proc->showAllProcess());
-    ```
+```php
+$proc=new BackgroundProcess();
+print_r($proc->showAllProcess());
+```
 
 ## How to kill a process?
 
-    ```php
-    $proc=new BackgroundProcess();
-    $proc->setProcessId(101)->stop(); //set the process id.
-    ```
+```php
+$proc=new BackgroundProcess();
+$proc->setProcessId(101)->stop(); //set the process id.
+```
 
 ## How to generate stdout and stderr in a file. (Recommended Only for debugging)
 
 ```php
-	//Pass a additional true flag
-	$proc=new BackgroundProcess('exec php <BASE_PATH>/process.php hello world', true);
+//Pass a additional true flag
+$proc=new BackgroundProcess('exec php <BASE_PATH>/process.php hello world', true);
 ```
 
 After run which will generate `/tmp/out_<random_number>` for `stdout` and `/tmp/error_out_<random_number>` for `stderr`
@@ -144,7 +144,6 @@ use CodeIgniter\Controller;
 
 class Background extends Controller
 {
-
     public function run($to = 'World')
     {
         echo "Hello I am a background process {$to}!" . PHP_EOL;
@@ -191,7 +190,6 @@ class BackgroundRunner extends Controller
 
 class Background extends CI_Controller
 {
-
     public function run($to = 'World')
     {
         echo "Hello I am a background process {$to}!" . PHP_EOL;
@@ -203,16 +201,16 @@ class Background extends CI_Controller
 **Step 3:** Add a member function name `background` to `application/controllers/Welcome.php`. Place below code there.
 
 ```php
-	public function background()
-	{
-		$this->load->library('backgroundprocess');
-		$this->backgroundprocess->setCmd("curl -o /www/application/logs/log_background_process.log " . base_url('index.php/background/run'));
-		//Please don't use "true" argument in a production, This will fill your storage if you not clean all the logs.
-		$this->backgroundprocess->start(true);
-		$pid = $this->backgroundprocess->getProcessId();
-		echo $this->backgroundprocess->get_log_paths();
-		echo $pid . "\n";
-	}
+public function background()
+{
+	$this->load->library('backgroundprocess');
+	$this->backgroundprocess->setCmd("curl -o /www/application/logs/log_background_process.log " . base_url('index.php/background/run'));
+	//Please don't use "true" argument in a production, This will fill your storage if you not clean all the logs.
+	$this->backgroundprocess->start(true);
+	$pid = $this->backgroundprocess->getProcessId();
+	echo $this->backgroundprocess->get_log_paths();
+	echo $pid . "\n";
+}
 ```
 
 **Step 4**: try running `http://localhost:[port]/www/index.php/welcome/background`
@@ -244,15 +242,16 @@ You will find two path which consist of `/opt/lampp/lib/` and `/usr/lib/x86_64-l
 
 To fix this follow below 2 command if needed use `sudo`
 
-    ```sh
-    rm /opt/lampp/lib/libcurl.so.4
-    ln -s /usr/lib/x86_64-linux-gnu/libcurl.so.4.5.0 /opt/lampp/lib/libcurl.so.4
-    ```
-    Try again to run the application and check if you are getting any error.
-    I get below error too. Solve the same way above.
+```sh
+rm /opt/lampp/lib/libcurl.so.4
+ln -s /usr/lib/x86_64-linux-gnu/libcurl.so.4.5.0 /opt/lampp/lib/libcurl.so.4
+```
 
-    ```sh
-    root@3d009baa70f5:/# cat /tmp/error_out_13
-    curl: /opt/lampp/lib/libldap_r-2.4.so.2: no version information available (required by /opt/lampp/lib/libcurl.so.4)
-    curl: /opt/lampp/lib/liblber-2.4.so.2: no version information available (required by /opt/lampp/lib/libcurl.so.4)
-    ```
+Try again to run the application and check if you are getting any error.
+I get below error too. Solve the same way above.
+
+```sh
+root@3d009baa70f5:/# cat /tmp/error_out_13
+curl: /opt/lampp/lib/libldap_r-2.4.so.2: no version information available (required by /opt/lampp/lib/libcurl.so.4)
+curl: /opt/lampp/lib/liblber-2.4.so.2: no version information available (required by /opt/lampp/lib/libcurl.so.4)
+```
